@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://4qu2xk2c77wv"]
+
+[ext_resource type="Script" path="res://card_manager.gd" id="1_6miio"]
+[ext_resource type="PackedScene" uid="uid://cqjh4748offt0" path="res://card.tscn" id="2_7w3n1"]
+[ext_resource type="PackedScene" uid="uid://byfesufh0rm42" path="res://Deck.tscn" id="2_oht2j"]
+
+[node name="CardManager" type="Node2D"]
+script = ExtResource("1_6miio")
+card_scene = ExtResource("2_7w3n1")
+
+[node name="Deck" parent="." instance=ExtResource("2_oht2j")]
+
+[node name="CardContainer" type="HBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 100.0
+offset_top = 300.0
+offset_right = 1100.0
+offset_bottom = 600.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1

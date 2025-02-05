@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3 uid="uid://cqjh4748offt0"]
+
+[ext_resource type="Script" path="res://control.gd" id="1_hqx8l"]
+[ext_resource type="Texture2D" uid="uid://bho1e2otwbrov" path="res://card.jpg" id="2_jqci0"]
+
+[node name="Control" type="Control"]
+custom_minimum_size = Vector2(200, 300)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 200.0
+offset_bottom = 300.0
+script = ExtResource("1_hqx8l")
+
+[node name="CardSprite" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_jqci0")
+expand_mode = 1
+
+[node name="RankLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 87.0
+offset_bottom = 80.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 48
+text = "A"
+
+[node name="SuitLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 20.0
+offset_right = 174.0
+offset_bottom = 87.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 48
+text = "♠"

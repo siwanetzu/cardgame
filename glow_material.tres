@@ -1,0 +1,27 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3]
+
+[sub_resource type="Shader" id="Shader_1"]
+code = "shader_type canvas_item;
+
+uniform vec4 glow_color : source_color = vec4(0.0, 0.5, 1.0, 0.3);
+
+void fragment() {
+    vec4 current_color = texture(TEXTURE, UV);
+    vec4 glow = glow_color;
+    
+    // Create a soft glow effect
+    float glow_amount = 0.0;
+    for(float x = -3.0; x <= 3.0; x++) {
+        for(float y = -3.0; y <= 3.0; y++) {
+            vec2 offset = vec2(x, y) * 0.01;
+            glow_amount += texture(TEXTURE, UV + offset).a;
+        }
+    }
+    glow_amount = glow_amount / 49.0;
+    
+    // Mix the original color with the glow
+    COLOR = mix(current_color, glow, glow_amount * glow.a);
+}"
+
+[resource]
+shader = SubResource("Shader_1") 
