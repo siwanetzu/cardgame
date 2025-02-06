@@ -14,72 +14,93 @@ script = ExtResource("4_u8n2k")
 
 [node name="Deck" parent="." instance=ExtResource("2_oht2j")]
 
-[node name="GameInfo" type="PanelContainer" parent="."]
+[node name="TopBar" type="PanelContainer" parent="."]
 offset_left = 20.0
 offset_top = 20.0
-offset_right = 300.0
-offset_bottom = 160.0
+offset_right = 1260.0
+offset_bottom = 90.0
 
-[node name="MarginContainer" type="MarginContainer" parent="GameInfo"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TopBar"]
+layout_mode = 2
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="GameInfo" type="PanelContainer" parent="TopBar/HBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TopBar/HBoxContainer/GameInfo"]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="GameInfo/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TopBar/HBoxContainer/GameInfo/MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 30
 
-[node name="ScoreLabel" type="Label" parent="GameInfo/MarginContainer/VBoxContainer"]
+[node name="ScoreInfo" type="VBoxContainer" parent="TopBar/HBoxContainer/GameInfo/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="ScoreLabel" type="Label" parent="TopBar/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/ScoreInfo"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.85, 0, 1)
 theme_override_font_sizes/font_size = 24
 text = "Total Score: 0"
 
-[node name="RoundLabel" type="Label" parent="GameInfo/MarginContainer/VBoxContainer"]
+[node name="RoundInfo" type="VBoxContainer" parent="TopBar/HBoxContainer/GameInfo/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="RoundLabel" type="Label" parent="TopBar/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/RoundInfo"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Round 1"
 
-[node name="TargetLabel" type="Label" parent="GameInfo/MarginContainer/VBoxContainer"]
+[node name="TargetLabel" type="Label" parent="TopBar/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/RoundInfo"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Target: 500"
 
-[node name="HandsLabel" type="Label" parent="GameInfo/MarginContainer/VBoxContainer"]
+[node name="ResourceInfo" type="VBoxContainer" parent="TopBar/HBoxContainer/GameInfo/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="HandsLabel" type="Label" parent="TopBar/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/ResourceInfo"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Hands Left: 4"
 
-[node name="RedrawsLabel" type="Label" parent="GameInfo/MarginContainer/VBoxContainer"]
+[node name="RedrawsLabel" type="Label" parent="TopBar/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/ResourceInfo"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Redraws: 4"
 
-[node name="CardContainer" type="HBoxContainer" parent="."]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 100.0
-offset_top = 300.0
-offset_right = 1100.0
-offset_bottom = 600.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="ButtonContainer" type="HBoxContainer" parent="TopBar/HBoxContainer"]
+layout_mode = 2
 theme_override_constants/separation = 20
-alignment = 1
+
+[node name="SubmitButton" type="Button" parent="TopBar/HBoxContainer/ButtonContainer"]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Submit Hand"
+
+[node name="NewGameButton" type="Button" parent="TopBar/HBoxContainer/ButtonContainer"]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "New Game"
 
 [node name="HandDisplay" type="PanelContainer" parent="."]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = 100.0
-offset_top = 50.0
-offset_right = 1100.0
-offset_bottom = 120.0
+offset_left = 20.0
+offset_top = 110.0
+offset_right = 1260.0
+offset_bottom = 180.0
 grow_horizontal = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="HandDisplay"]
@@ -115,21 +136,17 @@ theme_override_font_sizes/font_size = 24
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ButtonContainer" type="HBoxContainer" parent="."]
-offset_left = 900.0
-offset_top = 20.0
-offset_right = 1100.0
-offset_bottom = 60.0
+[node name="CardContainer" type="HBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 20.0
+offset_top = 200.0
+offset_right = 1260.0
+offset_bottom = 500.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 20
-
-[node name="SubmitButton" type="Button" parent="ButtonContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 24
-text = "Submit Hand"
-
-[node name="NewGameButton" type="Button" parent="ButtonContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 24
-text = "New Game"
+alignment = 1
