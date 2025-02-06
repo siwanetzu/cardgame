@@ -1,4 +1,4 @@
-extends Node2D  # Root must be Node2D for positioning
+extends Control  # Root must be Control for UI layout
 
 @onready var deck = $Deck  # Reference to deck system
 @onready var card_container = $CardContainer  # Where drawn cards are displayed
@@ -59,30 +59,61 @@ func start_new_game():
 	submit_button.disabled = false
 	new_game_button.disabled = false
 
-func draw_hand(count):
+func draw_hand(count: int, redraw_selected: bool = false):
+	if redraw_selected and selected_cards.is_empty():
+		return  # Don't redraw if no cards are selected
+		
 	if not game_manager.redraw_hand():
 		# Can't redraw - either out of redraws or hands
 		if game_manager.is_game_over():
 			show_game_over()
 		return
-		
-	# Clear any existing cards
-	for child in card_container.get_children():
-		child.queue_free()
-	selected_cards.clear()
-	current_score = 0
-	update_hand_display("Select cards to form a hand", Color(1, 1, 1, 1))
-	update_score_display(0)
 	
-	# Draw new cards
-	for i in range(count):
-		var card_data = deck.draw_card()
-		if card_data:
-			var new_card = card_scene.instantiate()
-			new_card.rank = card_data.rank
-			new_card.suit = card_data.suit
-			card_container.add_child(new_card)
-			new_card.selection_changed.connect(_on_card_selection_changed)
+	if redraw_selected:
+		# Get the indices of selected cards to maintain position
+		var selected_indices = []
+		var all_cards = card_container.get_children()
+		for card in selected_cards:
+			selected_indices.append(all_cards.find(card))
+		selected_indices.sort()  # Sort to process from left to right
+		
+		# Remove only the selected cards
+		for card in selected_cards:
+			card.queue_free()
+		
+		# Draw new cards in the same positions
+		for idx in selected_indices:
+			var card_data = deck.draw_card()
+			if card_data:
+				var new_card = card_scene.instantiate()
+				new_card.rank = card_data.rank
+				new_card.suit = card_data.suit
+				card_container.add_child(new_card)
+				card_container.move_child(new_card, idx)  # Move to original position
+				new_card.selection_changed.connect(_on_card_selection_changed)
+		
+		selected_cards.clear()
+		current_score = 0
+		update_score_display(0)
+		update_hand_display("Select cards to form a hand", Color(1, 1, 1, 1))
+	else:
+		# Clear any existing cards for a full new hand
+		for child in card_container.get_children():
+			child.queue_free()
+		selected_cards.clear()
+		current_score = 0
+		update_hand_display("Select cards to form a hand", Color(1, 1, 1, 1))
+		update_score_display(0)
+		
+		# Draw new cards
+		for i in range(count):
+			var card_data = deck.draw_card()
+			if card_data:
+				var new_card = card_scene.instantiate()
+				new_card.rank = card_data.rank
+				new_card.suit = card_data.suit
+				card_container.add_child(new_card)
+				new_card.selection_changed.connect(_on_card_selection_changed)
 
 func _on_card_selection_changed(card, is_selected):
 	if is_selected:
@@ -223,10 +254,10 @@ func _on_submit_pressed():
 func _on_new_game_pressed():
 	start_new_game()
 
-# Space bar now only works if we can redraw
+# Space bar now redraws only selected cards
 func _input(event):
 	if event.is_action_pressed("ui_accept"):
-		draw_hand(5)
+		draw_hand(5, true)  # true indicates redraw only selected cards
 
 func show_game_over():
 	update_hand_display("Game Over! Final Score: " + str(game_manager.current_chips), Color(1, 0, 0, 1))
