@@ -10,6 +10,44 @@ card_scene = ExtResource("2_7w3n1")
 
 [node name="Deck" parent="." instance=ExtResource("2_oht2j")]
 
+[node name="GameInfo" type="PanelContainer" parent="."]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 300.0
+offset_bottom = 160.0
+
+[node name="MarginContainer" type="MarginContainer" parent="GameInfo"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameInfo/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ChipsLabel" type="Label" parent="GameInfo/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "Chips: 1000"
+
+[node name="RoundLabel" type="Label" parent="GameInfo/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Round 1"
+
+[node name="TargetLabel" type="Label" parent="GameInfo/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Target: 500"
+
+[node name="RedrawsLabel" type="Label" parent="GameInfo/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Redraws: 3"
+
 [node name="CardContainer" type="HBoxContainer" parent="."]
 anchors_preset = 8
 anchor_left = 0.5
@@ -42,13 +80,36 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 10
 
-[node name="HandLabel" type="Label" parent="HandDisplay/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HandDisplay/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+alignment = 1
+
+[node name="HandLabel" type="Label" parent="HandDisplay/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 32
-text = "Select 5 cards to evaluate hand"
+text = "Select cards to form a hand"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="HandDisplay/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.5, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SubmitButton" type="Button" parent="."]
+offset_left = 900.0
+offset_top = 20.0
+offset_right = 1100.0
+offset_bottom = 60.0
+theme_override_font_sizes/font_size = 24
+text = "Submit Hand"

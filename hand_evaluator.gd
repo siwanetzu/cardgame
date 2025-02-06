@@ -15,11 +15,55 @@ enum HandRank {
 	ROYAL_FLUSH = 9
 }
 
-# Convert card ranks to numeric values for comparison
+# Base scores for each hand type
+const BASE_SCORES = {
+	HandRank.HIGH_CARD: 10,
+	HandRank.PAIR: 50,
+	HandRank.TWO_PAIR: 100,
+	HandRank.THREE_OF_A_KIND: 200,
+	HandRank.STRAIGHT: 300,
+	HandRank.FLUSH: 400,
+	HandRank.FULL_HOUSE: 500,
+	HandRank.FOUR_OF_A_KIND: 800,
+	HandRank.STRAIGHT_FLUSH: 1200,
+	HandRank.ROYAL_FLUSH: 2000
+}
+
+# Rank values for scoring
 var rank_values = {
 	"2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10,
 	"J": 11, "Q": 12, "K": 13, "A": 14
 }
+
+# Calculate the score for a hand result
+func calculate_score(result: Dictionary) -> int:
+	var base_score = BASE_SCORES[result.rank]
+	
+	# Calculate rank bonus based on the cards
+	var rank_bonus = 0
+	match result.rank:
+		HandRank.HIGH_CARD:
+			rank_bonus = rank_values[result.high_card]
+		HandRank.PAIR:
+			rank_bonus = rank_values[result.value] * 5
+		HandRank.TWO_PAIR:
+			rank_bonus = (rank_values[result.high_pair] + rank_values[result.low_pair]) * 5
+		HandRank.THREE_OF_A_KIND:
+			rank_bonus = rank_values[result.value] * 10
+		HandRank.STRAIGHT:
+			rank_bonus = rank_values[result.high_card] * 8
+		HandRank.FLUSH:
+			rank_bonus = 50
+		HandRank.FULL_HOUSE:
+			rank_bonus = rank_values[result.three_rank] * 10 + rank_values[result.pair_rank] * 5
+		HandRank.FOUR_OF_A_KIND:
+			rank_bonus = rank_values[result.value] * 20
+		HandRank.STRAIGHT_FLUSH:
+			rank_bonus = rank_values[result.high_card] * 15
+		HandRank.ROYAL_FLUSH:
+			rank_bonus = 200
+	
+	return base_score + rank_bonus
 
 # Evaluate a hand of cards and return the best poker hand
 func evaluate_hand(cards: Array) -> Dictionary:

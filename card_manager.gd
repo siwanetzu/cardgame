@@ -2,13 +2,21 @@ extends Node2D  # Root must be Node2D for positioning
 
 @onready var deck = $Deck  # Reference to deck system
 @onready var card_container = $CardContainer  # Where drawn cards are displayed
-@onready var hand_label = $HandDisplay/MarginContainer/HandLabel
+@onready var hand_label = $HandDisplay/MarginContainer/VBoxContainer/HandLabel
+@onready var score_label = $HandDisplay/MarginContainer/VBoxContainer/ScoreLabel
 @onready var hand_display = $HandDisplay
+@onready var submit_button = $SubmitButton
+@onready var chips_label = $GameInfo/MarginContainer/VBoxContainer/ChipsLabel
+@onready var round_label = $GameInfo/MarginContainer/VBoxContainer/RoundLabel
+@onready var target_label = $GameInfo/MarginContainer/VBoxContainer/TargetLabel
+@onready var redraws_label = $GameInfo/MarginContainer/VBoxContainer/RedrawsLabel
 
 @export var card_scene: PackedScene  # Assign Card.tscn in the Inspector
 
 var selected_cards = []
 var hand_evaluator = HandEvaluator.new()
+var current_score = 0
+var game_manager = GameManager.new()
 
 # Colors for different hand ranks
 const HAND_COLORS = {
@@ -25,15 +33,33 @@ const HAND_COLORS = {
 }
 
 func _ready():
+	add_child(game_manager)
+	
+	# Connect signals
+	game_manager.chips_updated.connect(_on_chips_updated)
+	game_manager.round_updated.connect(_on_round_updated)
+	game_manager.redraws_updated.connect(_on_redraws_updated)
+	game_manager.round_completed.connect(_on_round_completed)
+	submit_button.pressed.connect(_on_submit_pressed)
+	
 	draw_hand(5)  # Draw 5 cards when the game starts
 	update_hand_display("Select cards to form a hand", Color(1, 1, 1, 1))
+	update_score_display(0)
 
 func draw_hand(count):
+	if not game_manager.redraw_hand():
+		# Can't redraw - either out of redraws or chips
+		if game_manager.game_over():
+			show_game_over()
+		return
+		
 	# Clear any existing cards
 	for child in card_container.get_children():
 		child.queue_free()
 	selected_cards.clear()
+	current_score = 0
 	update_hand_display("Select cards to form a hand", Color(1, 1, 1, 1))
+	update_score_display(0)
 	
 	# Draw new cards
 	for i in range(count):
@@ -56,8 +82,11 @@ func _on_card_selection_changed(card, is_selected):
 	
 	if selected_cards.size() > 0:
 		evaluate_hand()
+		submit_button.disabled = false
 	else:
 		update_hand_display("Select cards to form a hand", Color(1, 1, 1, 1))
+		update_score_display(0)
+		submit_button.disabled = true
 
 func get_selected_cards_string() -> String:
 	var cards = []
@@ -92,22 +121,63 @@ func evaluate_hand():
 		HandEvaluator.HandRank.HIGH_CARD:
 			message += " (" + result.high_card + ")"
 	
-	# Add number of cards used
-	message += " (%d cards)" % selected_cards.size()
+	# Calculate base score
+	current_score = hand_evaluator.calculate_score(result)
+	
+	# Apply Joker modifiers (to be implemented)
+	current_score = apply_joker_modifiers(current_score, result)
 	
 	# Update the display with the result
 	update_hand_display(message, HAND_COLORS[result.rank])
+	update_score_display(current_score)
 	
 	# Animate the display
 	var tween = create_tween()
 	tween.tween_property(hand_display, "scale", Vector2(1.1, 1.1), 0.1)
 	tween.tween_property(hand_display, "scale", Vector2(1.0, 1.0), 0.1)
 
+func apply_joker_modifiers(base_score: int, hand_result: Dictionary) -> int:
+	var final_score = base_score
+	# TODO: Apply modifiers from active_jokers
+	# This will be implemented when we add Jokers
+	return final_score
+
 func update_hand_display(text: String, color: Color):
 	hand_label.text = text
 	hand_label.add_theme_color_override("font_color", color)
 
-# Add a button to redraw the hand
+func update_score_display(score: int):
+	if score == 0:
+		score_label.text = ""
+	else:
+		score_label.text = "Score: %d" % score
+		# TODO: Add display for active Joker modifiers
+
+func _on_chips_updated(amount: int):
+	chips_label.text = "Chips: %d" % amount
+
+func _on_round_updated(round_num: int, target: int):
+	round_label.text = "Round %d" % round_num
+	target_label.text = "Target: %d" % target
+
+func _on_redraws_updated(remaining: int):
+	redraws_label.text = "Redraws: %d" % remaining
+
+func _on_round_completed(success: bool, score: int):
+	if success:
+		update_hand_display("Round Complete! +" + str(score) + " chips", Color(0, 1, 0, 1))
+	else:
+		update_hand_display("Keep trying! Need " + str(game_manager.round_target) + " to advance", Color(1, 1, 0, 1))
+
+func _on_submit_pressed():
+	game_manager.submit_hand(current_score)
+	submit_button.disabled = true
+
+func show_game_over():
+	update_hand_display("Game Over! Final Score: " + str(game_manager.current_chips), Color(1, 0, 0, 1))
+	submit_button.disabled = true
+
+# Space bar now only works if we can redraw
 func _input(event):
-	if event.is_action_pressed("ui_accept"):  # Space bar
-		draw_hand(5)  # Redraw 5 cards
+	if event.is_action_pressed("ui_accept"):
+		draw_hand(5)
