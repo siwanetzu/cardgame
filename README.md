@@ -22,6 +22,7 @@ A card game built with Godot 4.3, inspired by the roguelike deckbuilder Balatro.
   - White background for visibility
   - Rounded corners for style
   - Dynamic text sizing
+  - Selection and hover animations
 
 #### Deck System (`deck.gd`, `Deck.tscn`) ✓
 - Standard 52-card deck implementation
@@ -37,9 +38,9 @@ A card game built with Godot 4.3, inspired by the roguelike deckbuilder Balatro.
 - [x] Card selection/highlighting
 - [x] Hand evaluation (poker hands)
 - [x] Scoring system
-- [ ] Basic game loop
-- [ ] Round management
-- [ ] Basic animations for card draws/moves
+- [x] Basic game loop
+- [x] Round management
+- [x] Basic animations for card draws/moves
 
 ### Phase 3: Balatro-Specific Features
 - [ ] Joker system implementation
@@ -52,7 +53,7 @@ A card game built with Godot 4.3, inspired by the roguelike deckbuilder Balatro.
 - [ ] Better card visuals
 - [x] Hand evaluation display
 - [x] Score display
-- [ ] Animation polish
+- [x] Animation polish (card hover/selection)
 - [ ] Sound effects
 - [ ] Background music
 
@@ -81,7 +82,19 @@ A card game built with Godot 4.3, inspired by the roguelike deckbuilder Balatro.
 - Dynamic rank and suit display
 - Color-coded suits (♥♦ in red, ♠♣ in black)
 - White background with rounded corners for visibility
-- Selection and hover effects
+- Selection and hover effects with animations
+- Position-based card replacement system
+```
+
+### Game Loop Implementation
+```gdscript
+# Core gameplay features:
+- 4 hands per round
+- 4 redraws available
+- Score target system
+- Selective card replacement
+- Round progression
+- Game over conditions
 ```
 
 ### Hand Evaluation System
@@ -113,20 +126,26 @@ A card game built with Godot 4.3, inspired by the roguelike deckbuilder Balatro.
 1. Open the project in Godot 4.3
 2. Run the main scene (`card_manager.tscn`)
 3. Click cards to select/deselect them
-4. Press spacebar to draw a new hand
+4. Submit hands to score points
+5. Manage your hands and redraws wisely
+6. Try to reach the target score to advance rounds
 
 ## Development Notes
 
-### Current Features
+### Current Features ✓
 - ✓ Basic card display and interaction
 - ✓ Hand evaluation and scoring
 - ✓ Visual feedback for card selection
 - ✓ Score display with hand details
+- ✓ Round management system
+- ✓ Selective card replacement
+- ✓ Game over conditions
+- ✓ New game functionality
 
 ### Next Steps Priority
-1. Implement basic game loop
-2. Add round management
-3. Add card draw/play animations
+1. Implement Joker system
+2. Add sound effects
+3. Add visual polish
 
 ## Contributing
 
