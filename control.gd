@@ -3,6 +3,11 @@ extends Control  # Ensure this is a UI node
 var _rank: String = "A"
 var _suit: String = "♠"
 var is_selected: bool = false
+var original_position: Vector2
+var HOVER_TINT = Color(0.85, 0.85, 0.85, 1.0)  # Dark grey tint
+var SELECTION_TINT = Color(0.8, 0.9, 1.0, 1.0)  # Subtle blue tint
+var SELECTION_RAISE = -20  # Pixels to raise the card when selected
+var HOVER_RAISE = -10  # Pixels to raise when hovering
 
 @export var rank: String:
 	get:
@@ -25,15 +30,22 @@ func _ready():
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 	gui_input.connect(_on_gui_input)
+	original_position = position
 	update_display()
 
 func _on_mouse_entered():
 	if not is_selected:
-		modulate = Color(0.9, 0.9, 1.0, 1.0)  # Slight blue tint for hover
+		modulate = HOVER_TINT
+		# Create a smooth animation for raising the card
+		var tween = create_tween()
+		tween.tween_property(self, "position:y", original_position.y + HOVER_RAISE, 0.1).set_trans(Tween.TRANS_SINE)
 
 func _on_mouse_exited():
 	if not is_selected:
-		modulate = Color(1, 1, 1, 1.0)  # Reset to normal
+		modulate = Color(1, 1, 1, 1.0)
+		# Smoothly return to original position
+		var tween = create_tween()
+		tween.tween_property(self, "position:y", original_position.y, 0.1).set_trans(Tween.TRANS_SINE)
 
 func _on_gui_input(event: InputEvent):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -42,14 +54,18 @@ func _on_gui_input(event: InputEvent):
 
 func toggle_selection():
 	is_selected = !is_selected
+	var tween = create_tween()
+	
 	if is_selected:
-		modulate = Color(0.8, 0.9, 1.0, 1.0)  # Blue tint for selection
-		# Add a glow effect
-		var glow = RectangleShape2D.new()
-		glow.size = Vector2(200, 300)
+		modulate = SELECTION_TINT
+		# Raise the card higher than hover and add blue tint
+		tween.tween_property(self, "position:y", original_position.y + SELECTION_RAISE, 0.15).set_trans(Tween.TRANS_SINE)
+		# Add glow effect
 		$CardSprite.material = load("res://glow_material.tres") if ResourceLoader.exists("res://glow_material.tres") else null
 	else:
-		modulate = Color(1, 1, 1, 1.0)  # Reset to normal
+		modulate = Color(1, 1, 1, 1.0)
+		# Return to original position
+		tween.tween_property(self, "position:y", original_position.y, 0.15).set_trans(Tween.TRANS_SINE)
 		$CardSprite.material = null
 	
 	# Emit signal for card manager to handle game logic
