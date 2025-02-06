@@ -5,13 +5,13 @@ extends Node2D  # Root must be Node2D for positioning
 @onready var hand_label = $HandDisplay/MarginContainer/VBoxContainer/HandLabel
 @onready var score_label = $HandDisplay/MarginContainer/VBoxContainer/ScoreLabel
 @onready var hand_display = $HandDisplay
-@onready var submit_button = $ButtonContainer/SubmitButton
-@onready var new_game_button = $ButtonContainer/NewGameButton
-@onready var total_score_label = $GameInfo/MarginContainer/VBoxContainer/ScoreLabel
-@onready var round_label = $GameInfo/MarginContainer/VBoxContainer/RoundLabel
-@onready var target_label = $GameInfo/MarginContainer/VBoxContainer/TargetLabel
-@onready var hands_label = $GameInfo/MarginContainer/VBoxContainer/HandsLabel
-@onready var redraws_label = $GameInfo/MarginContainer/VBoxContainer/RedrawsLabel
+@onready var submit_button = $TopBar/HBoxContainer/ButtonContainer/SubmitButton
+@onready var new_game_button = $TopBar/HBoxContainer/ButtonContainer/NewGameButton
+@onready var total_score_label = $TopBar/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/ScoreInfo/ScoreLabel
+@onready var round_label = $TopBar/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/RoundInfo/RoundLabel
+@onready var target_label = $TopBar/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/RoundInfo/TargetLabel
+@onready var hands_label = $TopBar/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/ResourceInfo/HandsLabel
+@onready var redraws_label = $TopBar/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/ResourceInfo/RedrawsLabel
 @onready var game_manager = $GameManager
 
 @export var card_scene: PackedScene  # Assign Card.tscn in the Inspector
@@ -36,16 +36,19 @@ const HAND_COLORS = {
 
 func _ready():
 	# Connect signals
-	game_manager.chips_updated.connect(_on_score_updated)
-	game_manager.round_updated.connect(_on_round_updated)
-	game_manager.redraws_updated.connect(_on_redraws_updated)
-	game_manager.hands_updated.connect(_on_hands_updated)
-	game_manager.round_completed.connect(_on_round_completed)
-	game_manager.game_over.connect(_on_game_over)
-	submit_button.pressed.connect(_on_submit_pressed)
-	new_game_button.pressed.connect(_on_new_game_pressed)
-	
-	start_new_game()
+	if game_manager and submit_button and new_game_button:
+		game_manager.chips_updated.connect(_on_score_updated)
+		game_manager.round_updated.connect(_on_round_updated)
+		game_manager.redraws_updated.connect(_on_redraws_updated)
+		game_manager.hands_updated.connect(_on_hands_updated)
+		game_manager.round_completed.connect(_on_round_completed)
+		game_manager.game_over.connect(_on_game_over)
+		submit_button.pressed.connect(_on_submit_pressed)
+		new_game_button.pressed.connect(_on_new_game_pressed)
+		
+		start_new_game()
+	else:
+		push_error("Required nodes not found during initialization")
 
 func start_new_game():
 	game_manager.reset_game()
