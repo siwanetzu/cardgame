@@ -1,17 +1,17 @@
-extends Control  # Root must be Control for UI layout
+extends Node2D  # Root must be Node2D for positioning
 
 @onready var deck = $Deck  # Reference to deck system
 @onready var card_container = $CardContainer  # Where drawn cards are displayed
 @onready var hand_label = $HandDisplay/MarginContainer/VBoxContainer/HandLabel
 @onready var score_label = $HandDisplay/MarginContainer/VBoxContainer/ScoreLabel
 @onready var hand_display = $HandDisplay
-@onready var submit_button = $TopBar/HBoxContainer/ButtonContainer/SubmitButton
-@onready var new_game_button = $TopBar/HBoxContainer/ButtonContainer/NewGameButton
-@onready var total_score_label = $TopBar/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/ScoreInfo/ScoreLabel
-@onready var round_label = $TopBar/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/RoundInfo/RoundLabel
-@onready var target_label = $TopBar/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/RoundInfo/TargetLabel
-@onready var hands_label = $TopBar/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/ResourceInfo/HandsLabel
-@onready var redraws_label = $TopBar/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/ResourceInfo/RedrawsLabel
+@onready var submit_button = $TopBar/MarginContainer/HBoxContainer/ButtonContainer/SubmitButton
+@onready var new_game_button = $TopBar/MarginContainer/HBoxContainer/ButtonContainer/NewGameButton
+@onready var total_score_label = $TopBar/MarginContainer/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/ScoreInfo/ScoreLabel
+@onready var round_label = $TopBar/MarginContainer/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/RoundInfo/RoundLabel
+@onready var target_label = $TopBar/MarginContainer/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/RoundInfo/TargetLabel
+@onready var hands_label = $TopBar/MarginContainer/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/ResourceInfo/HandsLabel
+@onready var redraws_label = $TopBar/MarginContainer/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/ResourceInfo/RedrawsLabel
 @onready var game_manager = $GameManager
 
 @export var card_scene: PackedScene  # Assign Card.tscn in the Inspector
