@@ -1,4 +1,4 @@
-extends Node2D  # Root must be Node2D for positioning
+extends Control  # Root must be Control for UI layout
 
 @onready var deck = $Deck  # Reference to deck system
 @onready var card_container = $CardContainer  # Where drawn cards are displayed
@@ -13,6 +13,9 @@ extends Node2D  # Root must be Node2D for positioning
 @onready var hands_label = $TopBar/MarginContainer/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/ResourceInfo/HandsLabel
 @onready var redraws_label = $TopBar/MarginContainer/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/ResourceInfo/RedrawsLabel
 @onready var game_manager = $GameManager
+@onready var victory_display = $VictoryDisplay
+@onready var victory_score_label = $VictoryDisplay/MarginContainer/VBoxContainer/ScoreLabel
+@onready var next_round_button = $VictoryDisplay/MarginContainer/VBoxContainer/NextRoundButton
 
 @export var card_scene: PackedScene  # Assign Card.tscn in the Inspector
 
@@ -36,7 +39,7 @@ const HAND_COLORS = {
 
 func _ready():
 	# Connect signals
-	if game_manager and submit_button and new_game_button:
+	if game_manager and submit_button and new_game_button and next_round_button:
 		game_manager.chips_updated.connect(_on_score_updated)
 		game_manager.round_updated.connect(_on_round_updated)
 		game_manager.redraws_updated.connect(_on_redraws_updated)
@@ -45,6 +48,7 @@ func _ready():
 		game_manager.game_over.connect(_on_game_over)
 		submit_button.pressed.connect(_on_submit_pressed)
 		new_game_button.pressed.connect(_on_new_game_pressed)
+		next_round_button.pressed.connect(_on_next_round_pressed)
 		
 		start_new_game()
 	else:
@@ -53,7 +57,7 @@ func _ready():
 func start_new_game():
 	game_manager.reset_game()
 	deck.shuffle_deck()
-	draw_hand(5)
+	draw_hand(8)
 	update_hand_display("Select cards to form a hand", Color(1, 1, 1, 1))
 	update_score_display(0)
 	submit_button.disabled = false
@@ -210,8 +214,10 @@ func _on_hands_updated(remaining: int):
 
 func _on_round_completed(success: bool, score: int):
 	if success:
-		update_hand_display("Round Complete! +" + str(score) + " points", Color(0, 1, 0, 1))
-		draw_hand(5)  # Automatically draw new hand for next round
+		# Show victory display
+		victory_score_label.text = "+" + str(score) + " Points!"
+		victory_display.visible = true
+		submit_button.disabled = true
 	else:
 		update_hand_display("Keep trying! Need " + str(game_manager.round_target) + " to advance", Color(1, 1, 0, 1))
 
@@ -253,6 +259,11 @@ func _on_submit_pressed():
 
 func _on_new_game_pressed():
 	start_new_game()
+
+func _on_next_round_pressed():
+	victory_display.visible = false
+	draw_hand(8)  # Draw new hand for next round
+	submit_button.disabled = false
 
 # Space bar now redraws only selected cards
 func _input(event):

@@ -5,7 +5,13 @@
 [ext_resource type="PackedScene" uid="uid://byfesufh0rm42" path="res://Deck.tscn" id="2_oht2j"]
 [ext_resource type="Script" path="res://game_manager.gd" id="4_u8n2k"]
 
-[node name="CardManager" type="Node2D"]
+[node name="CardManager" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_6miio")
 card_scene = ExtResource("2_7w3n1")
 
@@ -15,8 +21,11 @@ script = ExtResource("4_u8n2k")
 [node name="Deck" parent="." instance=ExtResource("2_oht2j")]
 
 [node name="TopBar" type="PanelContainer" parent="."]
-offset_right = 1280.0
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
 offset_bottom = 100.0
+grow_horizontal = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="TopBar"]
 layout_mode = 2
@@ -101,9 +110,15 @@ theme_override_font_sizes/font_size = 28
 text = "New Game"
 
 [node name="HandDisplay" type="PanelContainer" parent="."]
-offset_top = 120.0
-offset_right = 1280.0
-offset_bottom = 220.0
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -200.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="HandDisplay"]
 layout_mode = 2
@@ -139,9 +154,65 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="CardContainer" type="HBoxContainer" parent="."]
-offset_left = 20.0
-offset_top = 300.0
-offset_right = 1260.0
-offset_bottom = 600.0
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -320.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
 theme_override_constants/separation = 20
 alignment = 1
+
+[node name="VictoryDisplay" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -100.0
+offset_right = 300.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VictoryDisplay"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VictoryDisplay/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="VictoryLabel" type="Label" parent="VictoryDisplay/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 48
+text = "Round Complete!"
+horizontal_alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="VictoryDisplay/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "+500 Points!"
+horizontal_alignment = 1
+
+[node name="NextRoundButton" type="Button" parent="VictoryDisplay/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 28
+text = "Next Round"

@@ -36,11 +36,30 @@ A card game built with Godot 4.3, inspired by the roguelike deckbuilder Balatro.
 
 ### Phase 2: Core Game Mechanics
 - [x] Card selection/highlighting
+  - Position-based selection system
+  - Visual feedback on hover and selection
+  - Multiple card selection support
 - [x] Hand evaluation (poker hands)
+  - All poker hand combinations
+  - Detailed hand descriptions
+  - Color-coded results
 - [x] Scoring system
+  - Base scores for each hand type
+  - Rank-based bonuses
+  - Score accumulation across rounds
 - [x] Basic game loop
+  - Round-based progression
+  - Target score system
+  - Resource management (hands/redraws)
 - [x] Round management
+  - Victory celebration overlay
+  - Round completion feedback
+  - Progressive difficulty
 - [x] Basic animations for card draws/moves
+  - Hover effects
+  - Selection animations
+  - Score display animations
+  - Victory celebration effects
 
 ### Phase 3: Balatro-Specific Features
 - [ ] Joker system implementation
@@ -52,8 +71,21 @@ A card game built with Godot 4.3, inspired by the roguelike deckbuilder Balatro.
 ### Phase 4: UI/UX Improvements
 - [ ] Better card visuals
 - [x] Hand evaluation display
+  - Color-coded hand types
+  - Detailed hand descriptions
+  - Dynamic score updates
 - [x] Score display
+  - Total score tracking
+  - Round score display
+  - Target score indication
 - [x] Animation polish (card hover/selection)
+  - Smooth hover transitions
+  - Selection highlighting
+  - Position-based animations
+- [x] Responsive layout
+  - Screen size adaptation
+  - Centered game elements
+  - Proper spacing and margins
 - [ ] Sound effects
 - [ ] Background music
 
