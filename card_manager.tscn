@@ -27,7 +27,7 @@ theme_override_constants/margin_bottom = 20
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TopBar/MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 100
+theme_override_constants/separation = 200
 alignment = 1
 
 [node name="GameInfo" type="PanelContainer" parent="TopBar/MarginContainer/HBoxContainer"]
@@ -36,14 +36,14 @@ size_flags_horizontal = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="TopBar/MarginContainer/HBoxContainer/GameInfo"]
 layout_mode = 2
-theme_override_constants/margin_left = 20
+theme_override_constants/margin_left = 30
 theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 20
+theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 10
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TopBar/MarginContainer/HBoxContainer/GameInfo/MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 60
+theme_override_constants/separation = 100
 alignment = 1
 
 [node name="ScoreInfo" type="VBoxContainer" parent="TopBar/MarginContainer/HBoxContainer/GameInfo/MarginContainer/HBoxContainer"]
@@ -53,7 +53,7 @@ theme_override_constants/separation = 5
 [node name="ScoreLabel" type="Label" parent="TopBar/MarginContainer/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/ScoreInfo"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.85, 0, 1)
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 32
 text = "Total Score: 0"
 
 [node name="RoundInfo" type="VBoxContainer" parent="TopBar/MarginContainer/HBoxContainer/GameInfo/MarginContainer/HBoxContainer"]
@@ -62,12 +62,12 @@ theme_override_constants/separation = 5
 
 [node name="RoundLabel" type="Label" parent="TopBar/MarginContainer/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/RoundInfo"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 28
 text = "Round 1"
 
 [node name="TargetLabel" type="Label" parent="TopBar/MarginContainer/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/RoundInfo"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 28
 text = "Target: 500"
 
 [node name="ResourceInfo" type="VBoxContainer" parent="TopBar/MarginContainer/HBoxContainer/GameInfo/MarginContainer/HBoxContainer"]
@@ -76,28 +76,28 @@ theme_override_constants/separation = 5
 
 [node name="HandsLabel" type="Label" parent="TopBar/MarginContainer/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/ResourceInfo"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 28
 text = "Hands Left: 4"
 
 [node name="RedrawsLabel" type="Label" parent="TopBar/MarginContainer/HBoxContainer/GameInfo/MarginContainer/HBoxContainer/ResourceInfo"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 28
 text = "Redraws: 4"
 
 [node name="ButtonContainer" type="HBoxContainer" parent="TopBar/MarginContainer/HBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 30
+theme_override_constants/separation = 40
 
 [node name="SubmitButton" type="Button" parent="TopBar/MarginContainer/HBoxContainer/ButtonContainer"]
-custom_minimum_size = Vector2(180, 60)
+custom_minimum_size = Vector2(200, 60)
 layout_mode = 2
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 28
 text = "Submit Hand"
 
 [node name="NewGameButton" type="Button" parent="TopBar/MarginContainer/HBoxContainer/ButtonContainer"]
-custom_minimum_size = Vector2(180, 60)
+custom_minimum_size = Vector2(200, 60)
 layout_mode = 2
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 28
 text = "New Game"
 
 [node name="HandDisplay" type="PanelContainer" parent="."]
